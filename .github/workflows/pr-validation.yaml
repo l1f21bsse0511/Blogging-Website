@@ -1,24 +1,18 @@
-name: wf-linting-build-jobs
+name: wf-develop-pr
 on:
   pull_request:
-    branches:
+     branches:
       - develop
 jobs:
-  linting-job:
-    runs-on: ubuntu-latest
-    steps: 
-      - name: checkout repository
-        uses: actions/checkout@v4
-      - name: Lint HTML files
-        run: npx htmlhint "**/*.html"
-      - name: Lint CSS Files
-        run: npx stylelint "**/*.css"
-  build-job:
-    needs: linting-job
+  develop-pr-job:
     runs-on: ubuntu-latest
     steps:
-      - name: checkout repository
+      - name: Checkout Repo
         uses: actions/checkout@v4
-      - name: Build with Parcel
+      - name: Lint HTML and CSS Files
         run:
-          npx parcel build "./src/index.html" --dist-dir "./dev" --public-url "./"
+          npx htmlhint "**/* .html"
+          npx stylelint "**/* .css"
+      - name: Build Website
+        run:  
+          npx parcel build "./src/index.html" --dist-dir "./dist" --public-url "./"
